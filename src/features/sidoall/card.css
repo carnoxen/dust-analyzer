@@ -1,0 +1,24 @@
+.card {
+    border: 1px solid black;
+    background-color: grey;
+}
+
+.card.sig-1 {
+    background-color: green;
+}
+
+.card.sig-2 {
+    background-color: blue;
+}
+
+.card.sig-3 {
+    background-color: yellow;
+}
+
+.card.sig-4 {
+    background-color: orange;
+}
+
+.card.sig-5 {
+    background-color: red;
+}
