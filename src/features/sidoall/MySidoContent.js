@@ -59,9 +59,9 @@ function MySidoContent() {
                 <section key={sidoName + stationName} className={`card sig-${pm10Grade}`}>
                     <h2>{sidoName} {stationName}</h2>
                     <ul>
-                        <li>{strGrade(pm10Grade)}</li>
-                        <li>{pm10Value}</li>
-                        <li>{dataTime}</li>
+                        <li>등급: {strGrade(pm10Grade)}</li>
+                        <li>농도: {pm10Value}</li>
+                        <li>측정 시간: {dataTime}</li>
                     </ul>
                 </section>
             )}

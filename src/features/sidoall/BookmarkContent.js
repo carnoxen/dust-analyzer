@@ -43,9 +43,9 @@ function BookmarkContent() {
                 <section key={sidoName + stationName} className={`card sig-${pm10Grade}`}>
                     <h2>{sidoName} {stationName}</h2>
                     <ul>
-                        <li>{strGrade(pm10Grade)}</li>
-                        <li>{pm10Value}</li>
-                        <li>{dataTime}</li>
+                        <li>등급: {strGrade(pm10Grade)}</li>
+                        <li>농도: {pm10Value}</li>
+                        <li>측정 시간: {dataTime}</li>
                         <li><label>bookmark?: <input type="checkbox" 
                         value={JSON.stringify({sidoName, stationName, pm10Grade, pm10Value, dataTime})} 
                         checked={bms.filter(b => b.sidoName === sidoName && b.stationName === stationName).length > 0} 
