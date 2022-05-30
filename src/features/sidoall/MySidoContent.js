@@ -1,23 +1,6 @@
 import props from "../../props.json"
 import React, { useEffect, useState } from 'react';
-import './card.css'
-
-function strGrade(grade) {
-    switch (grade) {
-        case '1':
-            return "좋음";
-        case '2':
-            return "보통"
-        case '3':
-            return "한때 나쁨"
-        case '4':
-            return "나쁨"
-        case '5':
-            return "아주 나쁨"
-        default:
-            return "알 수 없음"
-    }
-}
+import DustSection from "./DustSection";
 
 function MySidoContent() {
     const regions = props.regions
@@ -55,16 +38,9 @@ function MySidoContent() {
         </header>
         <main id="mysido">
             <h1>내 지역</h1>
-            {dusts.filter(x => x.stationName === stationName).map(({sidoName, stationName, pm10Grade, pm10Value, dataTime}) =>
-                <section key={sidoName + stationName} className={`card sig-${pm10Grade}`}>
-                    <h2>{sidoName} {stationName}</h2>
-                    <ul>
-                        <li>등급: {strGrade(pm10Grade)}</li>
-                        <li>농도: {pm10Value}</li>
-                        <li>측정 시간: {dataTime}</li>
-                    </ul>
-                </section>
-            )}
+            {dusts
+            .filter(x => x.stationName === stationName)
+            .map((dust) => <DustSection key={dust.stationName} dust={JSON.stringify(dust)} bookmarked={false} />)}
         </main>
     </React.Fragment>)
 }
