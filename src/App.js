@@ -1,7 +1,8 @@
-// import logo from './logo.svg';
-//import './App.css';
 import './Nav.css'
-import React, {useState} from 'react';
+import props from './props.json'
+import React, {useEffect, useState} from 'react';
+import { useDispatch } from 'react-redux';
+import { setDusts } from './features/sidoall/sidoallSlice';
 import MySidoContent from './features/sidoall/MySidoContent';
 import SidoAllContent from './features/sidoall/SidoAllContent';
 import BookmarkContent from './features/sidoall/BookmarkContent'
@@ -14,6 +15,16 @@ function App() {
     const [status, setStatus] = useState('sidoall')
 
     const changeStatus = e => setStatus(e.target.value)
+    const dispatch = useDispatch();
+
+    const fetchData = async () => {
+        const {serviceKey, returnType, ver, numOfRows, pageNo} = props.settings;
+        const url = `B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=${serviceKey}&returnType=${returnType}&numOfRows=${numOfRows}&pageNo=${pageNo}&ver=${ver}&sidoName=전국`
+        
+        const data = await fetch(url).then(res => res.json())
+
+        dispatch(setDusts(data.response.body.items))
+    }
 
     const shuffle = () => {
         switch (status) {
@@ -27,6 +38,10 @@ function App() {
                 return (<main>no section</main>)
         }
     }
+
+    useEffect(() => {
+        fetchData();
+    }, [status])
 
     return (
         <React.Fragment>

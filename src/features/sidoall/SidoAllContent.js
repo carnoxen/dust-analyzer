@@ -1,34 +1,35 @@
 import props from "../../props.json"
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux'
+import { dusts } from "./sidoallSlice";
 import DustSection from "./DustSection";
+import RefreshButton from "../../RefreshButton";
 
 function SidoAllContent() {
-    const regions = ["전국", ...(props.regions)]
+    const regions = props.regions
+    
     const [sidoName, setSidoName] = useState(regions[0]);
-    const [dusts, setDusts] = useState([])
+    const [cards, setCards] = useState([])
+
+    const dust_sel = useSelector(dusts)
 
     const changeSidoName = e => setSidoName(e.target.value)
 
     useEffect(() => {
-        const { serviceKey, returnType, ver, numOfRows, pageNo } = props.settings;
-        const url = `B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=${serviceKey}&returnType=${returnType}&numOfRows=${numOfRows}&pageNo=${pageNo}&sidoName=${sidoName}&ver=${ver}`
-
-        fetch(url)
-            .then(res => res.json())
-            .then(data => data.response.body.items)
-            .then(res => setDusts(res))
+        setCards(dust_sel.filter(x => x.sidoName === sidoName))
     }, [sidoName])
 
     return (<React.Fragment>
         <header>
+            <RefreshButton />
             <select onInput={changeSidoName}>
-                {regions.map(reg => <option key={reg} value={reg} hidden={reg === sidoName}>{reg}</option>)}
+                {regions.map(region => <option key={region} value={region} hidden={region === sidoName}>{region}</option>)}
             </select>
         </header>
         <main id="sidoall">
             <h1>시도별 미세먼지 측정</h1>
-            {dusts
-            .map((dust) => (<DustSection key={dust.stationName} dust={JSON.stringify(dust)} />))}
+            {cards
+            .map(card => (<DustSection key={card.stationName} dust={JSON.stringify(card)} />))}
         </main>
     </React.Fragment>)
 }

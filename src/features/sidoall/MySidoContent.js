@@ -1,36 +1,34 @@
 import props from "../../props.json"
 import React, { useEffect, useState } from 'react';
+import {useSelector} from 'react-redux'
 import DustSection from "./DustSection";
+import RefreshButton from '../../RefreshButton';
+import {dusts} from './sidoallSlice'
 
 function MySidoContent() {
     const regions = props.regions
     
     const [sidoName, setSidoName] = useState(regions[0])
-    const [dusts, setDusts] = useState([])
+    const [cards, setCards] = useState([])
     const [stations, setStations] = useState([])
     const [stationName, setStationName] = useState('')
+
+    const dust_sel = useSelector(dusts)
 
     const changeSidoName = e => setSidoName(e.target.value)
     const changeStationName = e => setStationName(e.target.value)
 
     useEffect(() => {
-        const { serviceKey, returnType, ver, numOfRows, pageNo } = props.settings;
-        const url = `B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=${serviceKey}&returnType=${returnType}&numOfRows=${numOfRows}&pageNo=${pageNo}&sidoName=${sidoName}&ver=${ver}`
-
-        fetch(url)
-            .then(res => res.json())
-            .then(data => data.response.body.items)
-            .then(res => {
-                setDusts(res)
-                setStations(res.map(x => x.stationName))
-                setStationName(res.map(x => x.stationName).at(0))
-            })
+        setCards(dust_sel.filter(x => x.sidoName === sidoName))
+        setStations(dust_sel.filter(x => x.sidoName === sidoName).map(x => x.stationName))
+        setStationName(dust_sel.filter(x => x.sidoName === sidoName).map(x => x.stationName).at(0))
     }, [sidoName])
 
     return (<React.Fragment>
         <header>
+            <RefreshButton />
             <select onInput={changeSidoName}>
-                {regions.map(reg => <option key={reg} value={reg} hidden={reg === sidoName}>{reg}</option>)}
+                {regions.map(region => <option key={region} value={region} hidden={region === sidoName}>{region}</option>)}
             </select>
             <select onInput={changeStationName}>
                 {stations.map(station => <option key={station} value={station} hidden={station === stationName}>{station}</option>)}
@@ -38,9 +36,9 @@ function MySidoContent() {
         </header>
         <main id="mysido">
             <h1>내 지역</h1>
-            {dusts
+            {cards
             .filter(x => x.stationName === stationName)
-            .map((dust) => <DustSection key={dust.stationName} dust={JSON.stringify(dust)} bookmarked={false} />)}
+            .map((dust) => <DustSection key={dust.stationName} dust={JSON.stringify(dust)} bookmark={false} />)}
         </main>
     </React.Fragment>)
 }

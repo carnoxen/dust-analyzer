@@ -1,6 +1,6 @@
 import './card.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { addBookmark, removeBookmark, bookmarks } from './sidoallSlice'
+import { addBookmark, removeBookmark, bookmarks } from '../bookmark/bookmarkSlice'
 
 function strGrade(grade) {
     switch (grade) {
@@ -19,21 +19,20 @@ function strGrade(grade) {
     }
 }
 
-export default function DustSection({dust, bookmarked = true}) {
-    const {sidoName, stationName, pm10Grade, pm10Value, dataTime} = JSON.parse(dust);
-
+export default function DustSection({dust, bookmark = true}) {
+    const {sidoName, stationName, pm10Grade, pm10Value, dataTime} = JSON.parse(dust)
     const dispatch = useDispatch()
-    const bms = useSelector(bookmarks)
+    const bookmark_sel = useSelector(bookmarks)
 
     const selectBookmark = (e) => {
         const tar = e.target
         const data = JSON.parse(tar.value)
 
         if (tar.checked) {
-            dispatch(addBookmark(data))
+            dispatch(addBookmark(data.stationName))
         }
         else {
-            dispatch(removeBookmark(data))
+            dispatch(removeBookmark(data.stationName))
         }
     }
 
@@ -42,11 +41,11 @@ export default function DustSection({dust, bookmarked = true}) {
             <h2>{sidoName} {stationName}</h2>
             <ul>
                 <li>등급: {strGrade(pm10Grade)}</li>
-                <li>농도: {pm10Value}</li>
+                <li>농도: {pm10Value} &micro;g/m<sup>3</sup></li>
                 <li>측정 시간: {dataTime}</li>
-                {bookmarked && <li><label>bookmark?: <input type="checkbox" 
+                {bookmark && <li><label>bookmark?: <input type="checkbox" 
                         value={dust} 
-                        checked={bms.filter(b => b.sidoName === sidoName && b.stationName === stationName).length > 0} 
+                        checked={bookmark_sel.includes(stationName)} 
                         onChange={selectBookmark} /></label></li>}
             </ul>
         </section>
