@@ -41,7 +41,7 @@ function App() {
 
     useEffect(() => {
         fetchData();
-    }, [status])
+    }, [])
 
     return (
         <React.Fragment>
