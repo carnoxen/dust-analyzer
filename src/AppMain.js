@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import DustSection from './features/sidoall/DustSection';
 import { dusts } from './features/sidoall/sidoallSlice';
 
-export default function Main({ status, option }) {
+export default function AppMain({ status, option }) {
     const [cards, setCards] = useState([])
 
     const dust_sel = useSelector(dusts)

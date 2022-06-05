@@ -3,8 +3,8 @@ import props from './props.json'
 import {useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchDusts } from './features/sidoall/sidoallSlice';
-import Header from './Header';
-import Main from './Main';
+import AppHeader from './AppHeader';
+import AppMain from './AppMain';
 
 function FilterButton({ name, value, click }) {
     return (<button onClick={click} value={value}>{name}</button>)
@@ -21,12 +21,12 @@ function App() {
 
     useEffect(() => {
         dispatch(fetchDusts())
-    }, [])
+    }, [dispatch])
 
     return (
         <>
-            <Header status={status} setOption={setOption} />
-            <Main status={status} option={option} />
+            <AppHeader status={status} setOption={setOption} />
+            <AppMain status={status} option={option} />
             <nav>
                 <ul>
                     <li><FilterButton name="내 지역" value="mysido" click={changeStatus} /></li>

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import {useSelector} from 'react-redux'
 import {dusts} from './features/sidoall/sidoallSlice'
 
-export default function Header({ status, setOption }) {
+export default function AppHeader({ status, setOption }) {
     const regions = props.regions;
 
     const [sidoName, setSidoName] = useState(regions.at(0))
