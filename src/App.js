@@ -1,51 +1,32 @@
 import './Nav.css'
 import props from './props.json'
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
-import { setDusts } from './features/sidoall/sidoallSlice';
-import MySidoContent from './features/sidoall/MySidoContent';
-import SidoAllContent from './features/sidoall/SidoAllContent';
-import BookmarkContent from './features/sidoall/BookmarkContent'
+import { fetchDusts } from './features/sidoall/sidoallSlice';
+import Header from './Header';
+import Main from './Main';
 
 function FilterButton({ name, value, click }) {
     return (<button onClick={click} value={value}>{name}</button>)
 }
 
 function App() {
+    const regions = props.regions
+
     const [status, setStatus] = useState('sidoall')
+    const [option, setOption] = useState(regions.at(0));
 
     const changeStatus = e => setStatus(e.target.value)
     const dispatch = useDispatch();
 
-    const fetchData = async () => {
-        const {serviceKey, returnType, ver, numOfRows, pageNo} = props.settings;
-        const url = `B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=${serviceKey}&returnType=${returnType}&numOfRows=${numOfRows}&pageNo=${pageNo}&ver=${ver}&sidoName=전국`
-        
-        const data = await fetch(url).then(res => res.json())
-
-        dispatch(setDusts(data.response.body.items))
-    }
-
-    const shuffle = () => {
-        switch (status) {
-            case "sidoall":
-                return <SidoAllContent />
-            case "mysido":
-                return <MySidoContent />
-            case "bookmark":
-                return <BookmarkContent />
-            default:
-                return (<main>no section</main>)
-        }
-    }
-
     useEffect(() => {
-        fetchData();
+        dispatch(fetchDusts())
     }, [])
 
     return (
-        <React.Fragment>
-            {shuffle()}
+        <>
+            <Header status={status} setOption={setOption} />
+            <Main status={status} option={option} />
             <nav>
                 <ul>
                     <li><FilterButton name="내 지역" value="mysido" click={changeStatus} /></li>
@@ -53,7 +34,7 @@ function App() {
                     <li><FilterButton name="북마크" value="bookmark" click={changeStatus} /></li>
                 </ul>
             </nav>
-        </React.Fragment>
+        </>
     );
 }
 
