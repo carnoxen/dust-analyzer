@@ -28,11 +28,9 @@ function App() {
             <AppHeader status={status} setOption={setOption} />
             <AppMain status={status} option={option} />
             <nav>
-                <ul>
-                    <li><FilterButton name="내 지역" value="mysido" click={changeStatus} /></li>
-                    <li><FilterButton name="시도 전체" value="sidoall" click={changeStatus} /></li>
-                    <li><FilterButton name="북마크" value="bookmark" click={changeStatus} /></li>
-                </ul>
+                <FilterButton name="내 지역" value="mysido" click={changeStatus} />
+                <FilterButton name="시도 전체" value="sidoall" click={changeStatus} />
+                <FilterButton name="북마크" value="bookmark" click={changeStatus} />
             </nav>
         </>
     );

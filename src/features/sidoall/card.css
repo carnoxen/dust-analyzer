@@ -1,6 +1,9 @@
 .card {
-    border: 1px solid black;
+    color: white;
     background-color: grey;
+    border-radius: 1em;
+    padding: 0.5em;
+    margin: 1em;
 }
 
 .card.sig-1 {
@@ -21,4 +24,8 @@
 
 .card.sig-5 {
     background-color: red;
+}
+
+.card h2 {
+    text-align: center;
 }

@@ -1,12 +1,11 @@
 nav {
-    position: sticky;
-    bottom: 0;
-}
-
-nav ul {
     display: flex;
 }
 
-nav li {
+nav button {
     display: block;
+    width: 100%;
+    background-color: white;
+    border: none;
+    border-block-start: 1px solid black;
 }
