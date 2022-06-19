@@ -26,16 +26,16 @@ export default function DustSection({dust, bookmark = true}) {
     const selectBookmark = e => dispatch(toggleBookmark(e.target.value))
 
     return (
-        <section className={`card sig-${pm10Grade}`}>
+        <section className={`card sig-${pm10Grade} rounded-2xl p-4`}>
             <h2>{sidoName} {stationName}</h2>
             <ul>
                 <li>등급: {strGrade(pm10Grade)}</li>
                 <li>농도: {pm10Value} &micro;g/m<sup>3</sup></li>
                 <li>측정 시간: {dataTime}</li>
-                {bookmark && <li><label>bookmark?: <input type="checkbox" 
+                {bookmark && <li><label htmlFor={stationName}>bookmark?: </label><input id={stationName} type="checkbox" 
                         value={stationName} 
                         checked={bookmarked} 
-                        onChange={selectBookmark} /></label></li>}
+                        onChange={selectBookmark} /></li>}
             </ul>
         </section>
     )

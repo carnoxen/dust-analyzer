@@ -3,9 +3,9 @@ nav {
 }
 
 nav button {
+    box-sizing: border-box;
     display: block;
     width: 100%;
     background-color: white;
     border: none;
-    border-block-start: 1px solid black;
 }

@@ -3,6 +3,19 @@ import { useState, useEffect } from 'react'
 import {useSelector} from 'react-redux'
 import {dusts} from './features/sidoall/sidoallSlice'
 
+function heading(status) {
+    switch (status) {
+        case 'mysido':
+            return '내 지역';
+        case 'sidoall':
+            return '시/도별'
+        case 'bookmark':
+            return '북마크'
+        default:
+            return 'unknown'
+    }
+}
+
 export default function AppHeader({ status, setOption }) {
     const regions = props.regions;
 
@@ -29,6 +42,7 @@ export default function AppHeader({ status, setOption }) {
     }, [status, dust_sel, sidoName, setOption])
 
     return <header>
+        <h1>{heading(status)}</h1>
         <select onInput={changeSidoName} hidden={status !== 'mysido' && status !== 'sidoall'}>
             {regions.map(region => <option key={region} value={region} hidden={region === sidoName}>{region}</option>)}
         </select>

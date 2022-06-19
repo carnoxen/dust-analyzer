@@ -4,19 +4,6 @@ import { useSelector } from 'react-redux';
 import DustSection from './features/sidoall/DustSection';
 import { dusts } from './features/sidoall/sidoallSlice';
 
-function heading(status) {
-    switch (status) {
-        case 'mysido':
-            return '내 지역';
-        case 'sidoall':
-            return '시/도별'
-        case 'bookmark':
-            return '북마크'
-        default:
-            return 'unknown'
-    }
-}
-
 export default function AppMain({ status, option }) {
     const [cards, setCards] = useState([])
 
@@ -34,8 +21,7 @@ export default function AppMain({ status, option }) {
         }
     }, [status, option, dust_sel])
 
-    return <main>
-        <h1>{heading(status)}</h1>
+    return <main className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 content-start'>
         {cards
         .map(x => <DustSection key={x.stationName} dust={JSON.stringify(x)} bookmark={status !== 'mysido'} />)}
     </main>
