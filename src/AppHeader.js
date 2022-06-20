@@ -42,11 +42,11 @@ export default function AppHeader({ status, setOption }) {
     }, [status, dust_sel, sidoName, setOption])
 
     return <header>
-        <h1>{heading(status)}</h1>
-        <select onInput={changeSidoName} hidden={status !== 'mysido' && status !== 'sidoall'}>
+        <h1 className="text-center text-2xl my-1 font-bold">{heading(status)}</h1>
+        <select className="rounded-md border-2 border-gray-400 p-1" onInput={changeSidoName} hidden={status !== 'mysido' && status !== 'sidoall'}>
             {regions.map(region => <option key={region} value={region} hidden={region === sidoName}>{region}</option>)}
         </select>
-        <select onInput={changeStationName} hidden={status !== 'mysido'}>
+        <select className="rounded-md border-2 border-gray-400 p-1" onInput={changeStationName} hidden={status !== 'mysido'}>
             {stations.map(station => <option key={station} value={station} hidden={station === stationName}>{station}</option>)}
         </select>
     </header>

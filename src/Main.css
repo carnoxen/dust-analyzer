@@ -1,11 +1,16 @@
-html, body {
+:root {
+    --upper-height: 5em;
+    --under-height: 3em;
+}
+
+body {
     width: 100vw;
     height: 100vh;
 }
 
 #root {
     display: grid;
-    grid-template-rows: 4em calc(100vh - 6em) 2em;
+    grid-template-rows: var(--upper-height) calc(100vh - (var(--under-height) + var(--upper-height))) var(--under-height);
 }
 
 main {

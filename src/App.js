@@ -7,10 +7,10 @@ import AppHeader from './AppHeader';
 import AppMain from './AppMain';
 
 function FilterButton({ name, value, click }) {
-    return (<button onClick={click} value={value}>{name}</button>)
+    return (<button className='hover:bg-slate-200' onClick={click} value={value}>{name}</button>)
 }
 
-function App() {
+export default function App() {
     const regions = props.regions
 
     const [status, setStatus] = useState('sidoall')
@@ -28,12 +28,10 @@ function App() {
             <AppHeader status={status} setOption={setOption} />
             <AppMain status={status} option={option} />
             <nav>
-                <FilterButton name="내 지역" value="mysido" click={changeStatus} />
-                <FilterButton name="시도 전체" value="sidoall" click={changeStatus} />
-                <FilterButton name="북마크" value="bookmark" click={changeStatus} />
+                <FilterButton name="🏠내 지역" value="mysido" click={changeStatus} />
+                <FilterButton name="🏢시도 전체" value="sidoall" click={changeStatus} />
+                <FilterButton name="📒북마크" value="bookmark" click={changeStatus} />
             </nav>
         </>
     );
 }
-
-export default App;
