@@ -1,6 +1,5 @@
 import type { Dust } from "components/DustProvider";
 import type { Route } from "./+types/_index";
-import { env } from "process";
 import DustProvider, { DEFAULT_SIDO, useDusts } from "components/DustProvider";
 import DustSection from "components/DustSection";
 import SidoSelector from "components/SidoSelector";
@@ -12,7 +11,8 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
-export async function clientLoader() {
+export async function loader() {
+  const env = import.meta.env;
   const params = new URLSearchParams({
     serviceKey: env["FETCH_SERVICEKEY"]!,
     returnType: env["FETCH_RETURNTYPE"]!,
@@ -26,11 +26,6 @@ export async function clientLoader() {
     .then(x => x.json())
     .then(x => x["response"]["body"]["items"] as Dust[]);
   return dusts;
-}
-
-// HydrateFallback is rendered while the client loader is running
-export function HydrateFallback() {
-  return <div>Loading...</div>;
 }
 
 export default function Home({

@@ -1,4 +1,3 @@
-import { env } from "process";
 import { createContext, useContext, useReducer } from "react";
 
 export type Dust = {
@@ -21,7 +20,7 @@ type OptionTools = {
     dispatch: (action: Partial<Option>) => void;
 }
 
-export const DEFAULT_SIDO = env['NEXT_PUBLIC_DEFAULT_SIDO'] || "전국";
+export const DEFAULT_SIDO = import.meta.env['NEXT_PUBLIC_DEFAULT_SIDO'] || "전국";
 const DEFAULT_OPTION: Option = { data: [], sido: DEFAULT_SIDO, bookmark: false };
 
 const reducer = (state: Option, action: Partial<Option>): Option => {
