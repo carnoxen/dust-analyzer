@@ -14,13 +14,13 @@ export function meta({ }: Route.MetaArgs) {
 export async function loader() {
   const env = import.meta.env;
   const params = new URLSearchParams({
-    serviceKey: env["FETCH_SERVICEKEY"]!,
-    returnType: env["FETCH_RETURNTYPE"]!,
-    sidoName: env["NEXT_PUBLIC_DEFAULT_SIDO"]!,
-    ver: env["FETCH_VER"]!,
-    numOfRows: env["FETCH_NUMOFROWS"]!,
+    serviceKey: env["VITE_KEY"]!,
+    returnType: env["VITE_TYPE"]!,
+    ver: env["VITE_VER"]!,
+    numOfRows: env["VITE_NUMOFROWS"]!,
+    sidoName: env["VITE_PUBLIC_DEFAULT_SIDO"]!,
   });
-  const address = `${env["FETCH_BASEURL"]!}?${params.toString()}`;
+  const address = `${env["VITE_BASE"]!}?${params.toString()}`;
 
   const dusts = await fetch(address)
     .then(x => x.json())
