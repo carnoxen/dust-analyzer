@@ -40,8 +40,7 @@ function DustSection({ sidoName, stationName, pm10Grade, pm10Value, dataTime }: 
     const hsl = gradeToHSL(pm10Grade);
 
     const selectBookmark: ChangeEventHandler<HTMLInputElement> = e => {
-        const checked = e.target.checked;
-        const selectionsChanged = checked ? [...selections, stationName] : selections.filter(x => x !== stationName);
+        const selectionsChanged = e.target.checked ? [...selections, stationName] : selections.filter(x => x !== stationName);
         dispatch({
             selections: selectionsChanged,
         });
@@ -66,8 +65,7 @@ function DustSection({ sidoName, stationName, pm10Grade, pm10Value, dataTime }: 
 }
 
 export default function DustSectionList({ dusts }: { dusts: Dust[] }) {
-    const [state] = useOptions();
-    const {sido, bookmark, selections} = state;
+    const [{sido, bookmark, selections, sorting, reverse}] = useOptions();
 
     return (
         <main className="flex-col items-center justify-center pt-16 pb-4">
@@ -75,6 +73,14 @@ export default function DustSectionList({ dusts }: { dusts: Dust[] }) {
             {dusts
                 .filter(({ sidoName }) => [DEFAULT_SIDO, sidoName].includes(sido)) 
                 .filter(({ stationName }) => !bookmark || selections.includes(stationName))
+                .toSorted((a, b) => {
+                    if ('name' === sorting) {
+                        const dustName = (x:Dust) => `${x.sidoName}${x.stationName}`
+                        return dustName(a).localeCompare(dustName(b)) * (reverse ? -1 : 1);
+                    }
+
+                    return `${a[sorting]}`.localeCompare(`${b[sorting]}`) * (reverse ? -1 : 1);
+                })
                 .map(x => <DustSection key={x.stationName} {...x} />)}
         </main>
     )
