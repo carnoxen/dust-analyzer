@@ -35,8 +35,8 @@ export default function Home({
 
     return (
         <DustProvider>
-            <DustSectionList dusts={dusts} />
             <SidoSelector dusts={dusts} />
+            <DustSectionList dusts={dusts} />
         </DustProvider>
     );
 }

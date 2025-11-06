@@ -15,7 +15,7 @@ export default function SidoSelector({ dusts }: { dusts: Dust[] }) {
     }
 
     return (
-        <nav className="sticky w-screen bottom-0 bg-gray-600 p-3">
+        <nav className="sticky w-full inset-y-0 bg-gray-600 p-3">
             <label>Sido:
                 <select name="sido" onChange={handleChange} value={state.sido}>
                     {sidos.map(x => <option key={x} value={x} className="text-black">{x}</option>)}
