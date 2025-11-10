@@ -1,5 +1,5 @@
-import { type ChangeEventHandler } from "react";
-import { DEFAULT_SIDO, useOptions, type Dust } from "./DustProvider";
+import { useState, type ChangeEventHandler } from "react";
+import { DEFAULT_SIDO, useOption, type Dust } from "./DustProvider";
 
 function explainGrade(grade: string) {
     switch (grade) {
@@ -35,19 +35,16 @@ function gradeToHSL(grade: string) {
     }
 }
 
-function DustSection({ sidoName, stationName, pm10Grade, pm10Value, dataTime }: Dust) {
-    const [{ selections }, dispatch] = useOptions();
+function DustSection({ sidoName, stationName, pm10Grade, pm10Value, dataTime, bookmark }: Dust & { bookmark: boolean }) {
     const hsl = gradeToHSL(pm10Grade);
+    const [bookmarked, setBookmarked] = useState(false);
 
     const selectBookmark: ChangeEventHandler<HTMLInputElement> = e => {
-        const selectionsChanged = e.target.checked ? [...selections, stationName] : selections.filter(x => x !== stationName);
-        dispatch({
-            selections: selectionsChanged,
-        });
+        setBookmarked(e.target.checked);
     }
 
     return (
-        <section className={`${hsl} rounded-2xl p-3 m-1`}>
+        <section className={`${hsl} rounded-2xl p-3 m-1`} hidden={bookmark && !bookmarked}>
             <h2>{sidoName} {stationName}</h2>
             <ul>
                 <li>등급: {explainGrade(pm10Grade)}</li>
@@ -56,7 +53,7 @@ function DustSection({ sidoName, stationName, pm10Grade, pm10Value, dataTime }: 
                 <li>
                     <label>bookmark?: 
                         <input id={stationName} type="checkbox" value={stationName} onChange={selectBookmark}
-                        checked={selections.includes(stationName)} />
+                        checked={bookmarked} />
                     </label>
                 </li>
             </ul>
@@ -65,14 +62,13 @@ function DustSection({ sidoName, stationName, pm10Grade, pm10Value, dataTime }: 
 }
 
 export default function DustSectionList({ dusts }: { dusts: Dust[] }) {
-    const [{sido, bookmark, selections, sorting, reverse}] = useOptions();
+    const [{sido, bookmark, sorting, reverse}] = useOption();
 
     return (
         <main className="flex-col items-center justify-center pt-16 pb-4">
             <h1>초미세먼지 모음</h1>
             {dusts
                 .filter(({ sidoName }) => [DEFAULT_SIDO, sidoName].includes(sido)) 
-                .filter(({ stationName }) => !bookmark || selections.includes(stationName))
                 .toSorted((a, b) => {
                     if ('name' === sorting) {
                         const dustName = (x:Dust) => `${x.sidoName}${x.stationName}`
@@ -81,7 +77,7 @@ export default function DustSectionList({ dusts }: { dusts: Dust[] }) {
 
                     return `${a[sorting]}`.localeCompare(`${b[sorting]}`) * (reverse ? -1 : 1);
                 })
-                .map(x => <DustSection key={x.stationName} {...x} />)}
+                .map(x => <DustSection key={x.stationName} {...x} bookmark={bookmark} />)}
         </main>
     )
 }

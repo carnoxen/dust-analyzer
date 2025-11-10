@@ -25,18 +25,17 @@ export async function loader() {
     const dusts = await fetch(address)
         .then(x => x.json())
         .then(x => x["response"]["body"]["items"] as Dust[]);
+
     return dusts;
 }
 
 export default function Home({
     loaderData,
 }: Route.ComponentProps) {
-    const dusts = loaderData;
-
     return (
         <DustProvider>
-            <SidoSelector dusts={dusts} />
-            <DustSectionList dusts={dusts} />
+            <SidoSelector dusts={loaderData} />
+            <DustSectionList dusts={loaderData} />
         </DustProvider>
     );
 }

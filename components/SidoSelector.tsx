@@ -1,8 +1,8 @@
 import { type ChangeEvent } from "react";
-import { DEFAULT_SIDO, SORTING_SELECTIONS, useOptions, type Dust } from "./DustProvider";
+import { DEFAULT_SIDO, SORTING_SELECTIONS, useOption, type Dust } from "./DustProvider";
 
 export default function SidoSelector({ dusts }: { dusts: Dust[] }) {
-    const [state, dispatch] = useOptions();
+    const [state, dispatch] = useOption();
     const sidos = [...new Set([DEFAULT_SIDO, ...dusts.map(x => x.sidoName)])];
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {

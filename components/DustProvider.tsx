@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useCallback, useContext, useMemo, useReducer } from "react";
 
 export type Dust = {
     sidoName: string, 
@@ -19,10 +19,9 @@ type Option = {
     bookmark: boolean;
     sorting: keyof typeof SORTING_SELECTIONS;
     reverse: boolean;
-    selections: string[];
 }
 
-type OptionTools = [Option, (action: Partial<Option>) => void,]
+type OptionTool = [Option, (action: Partial<Option>) => void,]
 
 const DEFAULT_SORTING = 'name';
 export const DEFAULT_SIDO = import.meta.env['VITE_PUBLIC_DEFAULT_SIDO'] ?? "전국";
@@ -31,21 +30,24 @@ const DEFAULT_OPTION: Option = {
     bookmark: false, 
     sorting: DEFAULT_SORTING, 
     reverse: false,
-    selections: [], 
 };
 
 const reducer = (state: Option, action: Partial<Option>): Option => {
     return { ...state, ...action };
 }
 
-const DustContext = createContext<OptionTools>([DEFAULT_OPTION, () => {}]);
+const OptionContext = createContext<OptionTool>([DEFAULT_OPTION, () => {}]);
 
-export function useOptions() {
-    return useContext(DustContext);
+export function useOption() {
+    return useContext(OptionContext);
 }
 
 export default function DustProvider({ children }: { children: React.ReactNode }){
+    const [option, dispatch] = useReducer(reducer, DEFAULT_OPTION);
+    const callback = useCallback(dispatch, []);
+    const memo = useMemo<OptionTool>(() => [option, callback], [option]);
+    
     return (
-        <DustContext value={useReducer(reducer, DEFAULT_OPTION)}>{ children }</DustContext>
+        <OptionContext value={memo}>{ children }</OptionContext>
     );
 }
